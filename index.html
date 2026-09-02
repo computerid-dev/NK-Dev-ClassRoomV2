@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NK-Dev ClassRoom — Kelas online untuk guru dan murid</title>
+  <meta name="description" content="NK-Dev ClassRoom adalah ruang kelas digital: guru buat room, murid gabung dengan kode, semua diskusi dan tugas terpantau di satu tempat." />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#4c7a5c" />
+  <link rel="icon" href="/assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <a class="brand" href="/">
+        <img src="/assets/icons/icon-192.png" alt="Logo NK-Dev ClassRoom" />
+        NK-Dev ClassRoom
+      </a>
+      <div class="row gap-2">
+        <button class="btn btn-outline btn-sm" id="nav-login">Masuk</button>
+        <button class="btn btn-primary btn-sm" id="nav-register">Daftar</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container" style="padding: 64px 24px 40px;">
+      <div style="max-width: 640px;">
+        <h1>Satu ruang untuk kelas, tugas, dan diskusi harian.</h1>
+        <p>Guru membuat room dengan jadwal dan kode aksesnya sendiri. Murid bergabung lewat link atau kode, lalu menunggu disetujui sebelum bisa ikut diskusi.</p>
+        <div class="row gap-3">
+          <button class="btn btn-primary" id="hero-register">Mulai sekarang</button>
+          <button class="btn btn-outline" id="hero-login">Saya sudah punya akun</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ MODAL LOGIN ============ -->
+  <div class="modal-backdrop" id="login-modal" style="display:none;">
+    <div class="modal auth-card">
+      <div class="modal-header">
+        <h2>Masuk</h2>
+        <button class="icon-btn" data-close="login-modal">✕</button>
+      </div>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <p class="error-text" id="login-error" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ MODAL DAFTAR ============ -->
+  <div class="modal-backdrop" id="register-modal" style="display:none;">
+    <div class="modal auth-card">
+      <div class="modal-header">
+        <h2>Buat akun</h2>
+        <button class="icon-btn" data-close="register-modal">✕</button>
+      </div>
+
+      <div class="role-toggle">
+        <button type="button" class="active" data-role="guru">Saya Guru</button>
+        <button type="button" data-role="murid">Saya Murid</button>
+      </div>
+
+      <form id="register-form">
+        <div class="field">
+          <label for="reg-avatar">Foto profil</label>
+          <input type="file" id="reg-avatar" accept="image/*" required />
+          <span class="hint" id="avatar-hint">Guru: bebas. Murid: wajib foto wajah pakai seragam putih, sebahu.</span>
+        </div>
+
+        <div class="field">
+          <label for="reg-nama">Nama lengkap</label>
+          <input type="text" id="reg-nama" placeholder="CONTOH: BUDI SANTOSO" required />
+          <span class="hint">Otomatis disimpan dengan huruf kapital.</span>
+        </div>
+
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" required />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" minlength="8" required />
+          </div>
+          <div class="field">
+            <label for="reg-telp">Nomor telepon</label>
+            <input type="tel" id="reg-telp" required />
+          </div>
+        </div>
+
+        <!-- Field khusus GURU -->
+        <div id="fields-guru">
+          <div class="field">
+            <label>Mengajar sebagai</label>
+            <div class="role-toggle">
+              <button type="button" class="active" data-guru-type="wali">Wali kelas</button>
+              <button type="button" data-guru-type="pengajar">Guru pengajar</button>
+            </div>
+          </div>
+
+          <div class="field" id="field-kelas-wali">
+            <label for="reg-kelas-wali">Wali kelas berapa</label>
+            <input type="text" id="reg-kelas-wali" placeholder="Contoh: VII-1" />
+          </div>
+
+          <div class="field" id="field-mapel" style="display:none;">
+            <label>Mata pelajaran yang diajarkan (maks. 2)</label>
+            <div class="checkbox-group" id="mapel-options"></div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="reg-agama-guru">Agama</label>
+              <select id="reg-agama-guru"></select>
+            </div>
+            <div class="field">
+              <label for="reg-gender-guru">Jenis kelamin</label>
+              <select id="reg-gender-guru">
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Field khusus MURID -->
+        <div id="fields-murid" style="display:none;">
+          <div class="field">
+            <label for="reg-kelas-murid">Kelas</label>
+            <input type="text" id="reg-kelas-murid" placeholder="Contoh: VII-1" />
+          </div>
+        </div>
+
+        <p class="error-text" id="register-error" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block">Simpan &amp; buat akun</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script type="module" src="/src/scripts/auth.js"></script>
+  <script src="/src/scripts/pwa-register.js"></script>
+</body>
+</html>
